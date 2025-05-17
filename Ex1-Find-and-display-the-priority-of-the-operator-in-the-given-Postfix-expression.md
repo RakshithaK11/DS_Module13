@@ -4,11 +4,11 @@
 To write a C program to find and display the priority of the operator in the given Postfix expression
 
 ## Algorithm
-1.Start from the right of the prefix expression.
-2.Scan each symbol from right to left.
-3.If operand, push it onto the stack.
-4.If operator, pop two operands, apply the operator, and push the result.
-5.After the scan, the result will be on top of the stack—pop and print it.
+1.Scan the postfix expression from left to right.
+2.If the symbol is an operand, push it onto the stack.
+3.If the symbol is an operator, pop two operands from the stack.
+4.Apply the operator to the operands and push the result back onto the stack.
+5.After the scan, pop and print the final result from the stack.
 ## Program:
 ~~~
 /*
@@ -16,60 +16,61 @@ Program to find and display the priority of the operator in the given Postfix ex
 Developed by: RAKSHITHA K
 RegisterNumber:  212223110039
 
-#include<stdio.h>
-#include<string.h>
-#include<ctype.h>
+int stack[20];
+int top = -1;
 
-int s[50];
-int top=0;
-
-void push(int ch)
+void push(int x)
 {
-	top++;
-	s[top]=ch;
+    stack[++top] = x;
 }
 
 int pop()
 {
-	int ch;
-	ch=s[top];
-	top=top-1;
-	return(ch);
+    return stack[top--];
 }
 
-void evalprefix(char p[50])
+void evalpostfix(char *e)
 {
-    int a,b,c,i;
-    for(i=strlen(p)-1;i>=0;i--)
+    int n1,n2,n3,num;
+    while(*e != '\0')
     {
-        if(p[i]=='-')
+        if(isdigit(*e))
         {
-            a=pop();
-            b=pop();
-            c=a-b;
-            push(c);
+            num = *e - 48;
+            push(num);
         }
-        else if(p[i]=='*')
+        else
         {
-            a=pop();
-            b=pop();
-            c=a*b;
-            push(c);
+            n1 = pop();
+            n2 = pop();
+            switch(*e)
+            {
+            case '+':
+            {
+                n3 = n1 + n2;
+                break;
+            }
+          
+            case '*':
+            {
+                n3 = n1 * n2;
+                break;
+            }
+            }
+            push(n3);
         }
-        else{
-            push(p[i]-48);
-        }
+        e++;
     }
     printf("%d",pop());
-}
 
+}
 
 
 
 ~~~
 
 ## Output:
-![image](https://github.com/user-attachments/assets/a2f6527d-8d2b-4b5f-ac29-58b604a63315)
+![image](https://github.com/user-attachments/assets/5da9d900-c2c3-4536-b009-d763e687f302)
 
 ## Result:
 Thus the C program to find and display the priority of the operator in the given Postfix expression is implemented successfully
